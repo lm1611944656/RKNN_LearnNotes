@@ -1,0 +1,1 @@
+ls ./imgs/*.jpg | shuf -n 150 > datasets.txt
