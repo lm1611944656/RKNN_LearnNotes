@@ -26,12 +26,32 @@ message(STATUS "Found OpenCV version: ${OpenCV_VERSION}")
 message(STATUS "OpenCV libraries to link: ${OpenCV_LIBS}")
 message(STATUS "OpenCV include directories: ${OpenCV_INCLUDE_DIRS}")
 
+# 到指定目录下去执行CMakeLists.txt
+add_subdirectory(${PROJECT_SOURCE_DIR}/src/utils)
+add_subdirectory(${PROJECT_SOURCE_DIR}/src/types)
+add_subdirectory(${PROJECT_SOURCE_DIR}/src/engine)
+
 # 添加源文件目录
-add_executable(${PROJECT_NAME} ${PROJECT_SOURCE_DIR}/src/main.cpp)
+add_executable(${PROJECT_NAME} 
+    ${PROJECT_SOURCE_DIR}/src/main2.cpp)
 
 target_include_directories(${PROJECT_NAME} PUBLIC
     ${OpenCV_INCLUDE_DIRS}
-    ${RKNN_API_INCLUDE_PATH})
+    ${RKNN_API_INCLUDE_PATH}
+    ${PROJECT_SOURCE_DIR}/src/utils)
+
+# 为目标指定库目录所在目录
+target_link_directories(${PROJECT_NAME}  PUBLIC
+    ${PROJECT_SOURCE_DIR}/libarys
+)
+
+# 为目标添加库
+target_link_libraries(${PROJECT_NAME}  PUBLIC
+    pthread                 # 使用多线程需要包含这个库
+    utils                    # libalib.a
+    engine                  # libengine.so
+    types                   # libtypes.so
+)
 
 target_link_libraries(${PROJECT_NAME} PUBLIC
     ${OpenCV_LIBS}

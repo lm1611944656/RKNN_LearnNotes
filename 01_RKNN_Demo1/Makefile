@@ -19,6 +19,6 @@ run: all
 	./$(BUILDDIR)/application
 
 clean: 
-	rm -rf $(BUILDDIR)
+	rm -rf $(BUILDDIR) && rm -rf ./libarys
 
 rebuild: clean all
